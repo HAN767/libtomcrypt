@@ -33,6 +33,7 @@ for my $file (sort @all_files) {
     push @{$troubles->{merge_conflict}}, $lineno if $l =~ /^(<<<<<<<|=======|>>>>>>>)([^<=>]|$)/;
     push @{$troubles->{trailing_space}}, $lineno if $l =~ / $/;
     push @{$troubles->{tab}}, $lineno            if $l =~ /\t/ && basename($file) !~ /^makefile/i;
+    push @{$troubles->{non_ascii_char}}, $lineno if $l =~ /[^[:ascii:]]/;
     $lineno++;
   }
   for my $k (sort keys %$troubles) {
