@@ -10,16 +10,16 @@ if [ -f check-source.pl ] ; then
   perl check-source.pl || exit 1
 fi
 
-if [ -d .git ] ; then
+if [ -f ./updatemakes.sh ] ; then
   echo "checking makefiles..."
+  beforeupdate=$(grep '' makefile*)
   ./updatemakes.sh
-  outofdate="$(git diff --name-only HEAD)"
-  if [ -n "$outofdate" ] ; then
-    echo "FAIL: makefiles not updated"
-    echo "$outofdate";
-    exit 1
+  afterupdate=$(grep '' makefile*)
+  if [ "$afterupdate" = "$beforeupdate" ] ; then
+    echo "PASS"
   else
-     echo "PASS"
+    echo "FAIL: makefiles not updated"
+    exit 1
   fi
 fi
 
